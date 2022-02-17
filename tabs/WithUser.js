@@ -43,7 +43,7 @@ const WithUser = () => {
           </View>
           <View style={tw`flex-col flex-1 items-center my-0.5 `}>
             <Text style={tw`text-gray-600 mb-0.5`}>ETA</Text>
-            <Text style={[tw`text-center text-gray-900 font-semibold`, { fontSize: 22 }]}>{vehicleEta ? vehicleEta.split(' ')[1].split(':').slice(0, 2).join(':') : 'calculating'}</Text>
+            <Text style={[tw`text-center text-gray-900 font-semibold`, { fontSize: 20 }]}>{vehicleEta ? vehicleEta.split(' ')[1].split(':').slice(0, 2).join(':') : 'calculating'}</Text>
           </View>
           <View style={tw`items-center flex-1 justify-between`}>
             <Text style={tw`text-gray-600 mb-0.5`}>
