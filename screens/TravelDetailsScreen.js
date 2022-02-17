@@ -38,7 +38,7 @@ const TravelDetailsScreen = ({ navigation, route }) => {
     return (
         <View style={{ flex: 1 }}>
             <AntDesign name='left' size={28}
-                style={{ padding: 12, position: 'absolute', top: SPACING * 4, left: SPACING, zIndex: 2 }}
+                style={{ padding: 12, position: 'absolute', top: SPACING * 4, left: SPACING, zIndex: 92 }}
                 color={'#333'} onPress={() => navigation.goBack()} />
 
             <SharedElement id={`item.${index}.bg`}>

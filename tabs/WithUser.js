@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Animated, StyleSheet, Text, TouchableOpacity, View, Modal, Image } from 'react-native'
+import { Animated, StyleSheet, Text, TouchableOpacity, View, Modal, Image, ActivityIndicator } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import tw from 'tailwind-react-native-classnames'
 import { Platform } from 'react-native'
@@ -36,9 +36,10 @@ const WithUser = () => {
             <Text style={tw`text-gray-600 mb-0.5`}>
               Time left
             </Text>
-            <Text style={[tw`text-center text-gray-900 font-semibold`, { fontSize: 16 }]}>
-              {vehicleTimeLeft ? (vehicleTimeLeft / 60).toFixed(0) + ' min' : 'calculating'}
-            </Text>
+            {vehicleTimeLeft ?
+              <Text style={[tw`text-center text-gray-900 font-semibold`, { fontSize: 16 }]}>{(vehicleTimeLeft / 60).toFixed(0) + ' min'}</Text>
+              :
+              <ActivityIndicator color={'gray'} style={tw``} />}
           </View>
           <View style={tw`flex-col flex-1 items-center my-0.5 `}>
             <Text style={tw`text-gray-600 mb-0.5`}>ETA</Text>
@@ -48,23 +49,24 @@ const WithUser = () => {
             <Text style={tw`text-gray-600 mb-0.5`}>
               KM left
             </Text>
-            <Text style={[tw`text-center text-gray-900 font-semibold`, { fontSize: 16 }]}>
-              {vehicleKMLeft ? (vehicleKMLeft / 1000).toFixed(2) : 'calculating'}
-            </Text>
+            {vehicleKMLeft ?
+              <Text style={[tw`text-center text-gray-900 font-semibold`, { fontSize: 16 }]}> {(vehicleKMLeft / 1000).toFixed(2)} </Text>
+              :
+              <ActivityIndicator color={'gray'} style={tw``} />}
           </View>
         </View>
       </View>
       <View style={tw` w-5/6  bg-gray-600 rounded-xl p-2 items-center shadow-lg`}>
         <Text style={tw`text-white mb-2 font-semibold`}>Adjust vehicle functionality</Text>
         <View style={tw`flex-row justify-around w-full`}>
-          <TouchableOpacity activeOpacity={0.7} style={[tw`items-center justify-center bg-gray-900 rounded-full`,{width: 50, height: 50}]}>
+          <TouchableOpacity activeOpacity={0.7} style={[tw`items-center justify-center bg-gray-900 rounded-full`, { width: 50, height: 50 }]}>
             <Image style={[{ width: 40, height: 40, resizeMode: 'contain' }, tw``]} source={require('../assets/acIcon.png')} />
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.7} style={[tw`items-center justify-center bg-gray-900 rounded-full`,{width: 50, height: 50}]}>
+          <TouchableOpacity activeOpacity={0.7} style={[tw`items-center justify-center bg-gray-900 rounded-full`, { width: 50, height: 50 }]}>
             <Image style={[{ width: 40, height: 40, resizeMode: 'contain' }, tw``]} source={require('../assets/musicIcon.png')} />
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.7} style={[tw`items-center justify-center bg-gray-900 rounded-full`,{width: 50, height: 50}]}>
-          <Image style={[{ width: 40, height: 40, resizeMode: 'contain' }, tw``]} source={require('../assets/lightIcon.png')} />
+          <TouchableOpacity activeOpacity={0.7} style={[tw`items-center justify-center bg-gray-900 rounded-full`, { width: 50, height: 50 }]}>
+            <Image style={[{ width: 40, height: 40, resizeMode: 'contain' }, tw``]} source={require('../assets/lightIcon.png')} />
           </TouchableOpacity>
         </View>
       </View>
