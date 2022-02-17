@@ -95,7 +95,7 @@ const ToUserBottomSheet = () => {
             scrollEnabled={false}
             showsHorizontalScrollIndicator={false}
             renderItem={({ item, index }) => {
-              return <View style={{ width: width * 0.9 + 1 }}>{item}</View>;
+              return <View style={{ width: width * 0.9 + 0.5 }}>{item}</View>;
             }} />
         </View>
       </BottomSheet>

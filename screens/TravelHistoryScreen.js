@@ -37,7 +37,7 @@ const TravelHistoryScreen = () => {
 
     return (
         <SafeAreaView style={{ flex: 1, width: '100%' }}>
-            {userHistory && <FlatList
+            {userHistory?.length > 0 ? <FlatList
                 contentContainerStyle={{ padding: SPACING }}
                 data={userHistory}
                 keyExtractor={item => Math.random()}
@@ -76,7 +76,12 @@ const TravelHistoryScreen = () => {
                         </Animatable.View>
                     </TouchableOpacity>
                 }}
-            />}
+            />:
+            <View style={tw`flex-1 items-center justify-center p-10`}>
+                <Text style={tw`font-bold text-lg text-center`}>There are no previous orders in your account.</Text>
+                <Text style={tw` text-center mt-6 opacity-60`}>To view your travel history, make sure you have created at least one order.</Text>
+            </View>
+            }
             <SharedElement id={'general.bg'}>
                 <View style={styles.bg} />
             </SharedElement>

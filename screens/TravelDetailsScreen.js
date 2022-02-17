@@ -101,7 +101,7 @@ const TravelDetailsScreen = ({ navigation, route }) => {
                                 <TouchableOpacity onPress={() => Linking.openURL('mailto:betteride_support@gmail.com?subject=I have a problem')}>
                                     <Text style={tw`text-center text-gray-500`}>email: betteride_support@gmail.com</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => Linking.openURL('tel:' + fakePhoneNumber)}>
+                                <TouchableOpacity onPress={() => Linking.openURL('tel:' + '+972-545-76504')}>
                                     <Text style={tw`text-center text-gray-500`}>phone: +972-545-76504</Text>
                                 </TouchableOpacity>
                             </Animatable.View>

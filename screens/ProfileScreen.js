@@ -7,16 +7,16 @@ import { KeyboardAvoidingView, Platform } from "react-native";
 import tw from 'tailwind-react-native-classnames'
 import { CreditCardInput } from "react-native-credit-card-input";
 import { useNavigation } from "@react-navigation/native";
-import { useSelector,useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { selectUserInfo, setUserInfo } from '../slices/userSlice';
-import {IP_ADDRESS} from "@env";
+import { IP_ADDRESS } from "@env";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const ProfileScreen = () => {
     const userData = useSelector(selectUserInfo)
-    const [firstName, setFirstName] = useState(userData.firstName);
-    const [lastName, setLastName] = useState(userData.lastName);
+    const [givenName, setGivenName] = useState(userData.givenName);
+    const [familyName, setFamilyName] = useState(userData.familyName);
     const [email, setEmail] = useState(userData.email);
     const [creditCard, setCreditCard] = useState({ number: '** ** ** 4011', expiry: '03 / 25', cvc: '062' });
     const navigation = useNavigation();
@@ -35,18 +35,18 @@ const ProfileScreen = () => {
         {
             id: 0,
             label: 'First Name',
-            userField: 'firstName',
+            userField: 'givenName',
             keyboardType: 'default',
-            value: firstName,
-            setValue: setFirstName
+            value: givenName,
+            setValue: setGivenName
         },
         {
             id: 1,
             label: 'Last Name',
-            userField: 'lastName',
+            userField: 'familyName',
             keyboardType: 'default',
-            value: lastName,
-            setValue: setLastName
+            value: familyName,
+            setValue: setFamilyName
         },
         {
             id: 2,
@@ -69,25 +69,25 @@ const ProfileScreen = () => {
     const updateUserInfo = async () => {
         const tempUser = {
             id: userData.id,
-            firstName,
-            lastName,
+            givenName,
+            familyName,
         }
         await fetch(`https://betteride-firebase-server-3mmcqmln7a-ew.a.run.app/updateUserInfo`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({tempUser})
+            body: JSON.stringify({ tempUser })
         })
+        alert("Profile has been updated!")
         storeAndDispatchUserData({
             id: userData.id,
-            firstName,
-            lastName,
-            email:userData.email,
-            photoUrl:userData.photoUrl,
+            givenName: userData.givenName,
+            familyName: userData.familyName,
+            email: userData.email,
+            photoUrl: userData.photoUrl,
         })
-        console.log("f")
-        alert("Profile has been updated!")
+        navigation.goBack();
     }
     const cardInputChange = (form) => {
         return false;
@@ -146,9 +146,10 @@ const ProfileScreen = () => {
                             </View>
                         </TouchableOpacity>
                 )} />
-
-            <TouchableOpacity onPress={() => updateUserInfo()} style={tw`items-center justify-center pt-2 overflow-hidden`}>
-                <Text style={tw`bg-blue-200 rounded-full py-2 px-4`}>Apply Changes</Text>
+            <TouchableOpacity onPress={() => updateUserInfo()} style={tw`items-center justify-center overflow-hidden`}>
+                <View style={tw`w-1/3 bg-blue-200 py-2 px-4 rounded-xl shadow-md m-3`}>
+                    <Text style={tw`text-center `}>Apply Changes</Text>
+                </View>
             </TouchableOpacity>
         </View>
     )
