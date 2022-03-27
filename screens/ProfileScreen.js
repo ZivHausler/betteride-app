@@ -14,6 +14,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const ProfileScreen = () => {
+    
     const userData = useSelector(selectUserInfo)
     const [givenName, setGivenName] = useState(userData.givenName);
     const [familyName, setFamilyName] = useState(userData.familyName);
@@ -22,15 +23,6 @@ const ProfileScreen = () => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
 
-
-
-    // Object {
-    //     "email": "danielezraa@gmail.com",
-    //     "firstName": "Daniel",
-    //     "id": "106239502123201988788",
-    //     "lastName": "Ezra",
-    //     "photoUrl": "https://lh3.googleusercontent.com/a/AATXAJzu50b4W0ztsJh6RwNnoMfSPN6J0fix2Mkb1yt8r2c=s96-c",
-    //   }
     const data = [
         {
             id: 0,
@@ -72,7 +64,8 @@ const ProfileScreen = () => {
             givenName,
             familyName,
         }
-        await fetch(`https://betteride-firebase-server-3mmcqmln7a-ew.a.run.app/updateUserInfo`, {
+        // await fetch(`https://betteride-firebase-server-3mmcqmln7a-ew.a.run.app/updateUserInfo`, {
+        await fetch(`http://${IP_ADDRESS}:3001/updateUserInfo`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -97,26 +90,6 @@ const ProfileScreen = () => {
         AsyncStorage.setItem('Users', JSON.stringify({ user }))
             .catch(error => console.log('error', error));
     }
-
-    // // will print:
-    // {
-    //   valid: true, // will be true once all fields are "valid" (time to enable the submit button)
-    //   values: { // will be in the sanitized and formatted form
-    //   	number: "4242 4242",
-    //   	expiry: "06/19",
-    //   	cvc: "300",
-    //   	type: "visa", // will be one of [null, "visa", "master-card", "american-express", "diners-club", "discover", "jcb", "unionpay", "maestro"]
-    //   	name: "Sam",
-    //   	postalCode: "34567",
-    //   },
-    //   status: {  // will be one of ["incomplete", "invalid", and "valid"]
-    //     number: "incomplete",
-    //     expiry: "incomplete",
-    //     cvc: "incomplete",
-    //     name: "incomplete", 
-    //     postalCode: "incomplete",
-    //   },
-    // };
 
     return (
         <View style={tw`bg-white h-full w-full pt-2 pb-10`}>
