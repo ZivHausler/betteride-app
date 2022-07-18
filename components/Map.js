@@ -11,7 +11,6 @@ import RenderRoute from "./RenderRoute";
 import { getDatabase, ref, onValue } from 'firebase/database';
 import { selectUserLocation } from "../slices/userSlice";
 
-
 const Map = () => {
   const dispatch = useDispatch();
   const origin = useSelector(selectOrigin);
@@ -19,8 +18,10 @@ const Map = () => {
   const userLocation = useSelector(selectUserLocation);
   const routeShown = useSelector(selectRouteShown);
   const userAssignedVehicle = useSelector(selectUserAssignedVehicle);
+  const [tempVehicleID, setTempVehicleID] = useState(null);
   const vehicleLocation = useSelector(selectVehicleLocation);
-  
+  const unsubscribeListener = useRef(null);
+
   const mapRef = useRef(null);
   const [showLocation, setShowLocation] = useState({
     latitude: 32.690918, // atlit lat
@@ -28,6 +29,10 @@ const Map = () => {
     latitudeDelta: 0.5,
     longitudeDelta: 0.5,
   });
+
+  useEffect(() => {
+    if (userAssignedVehicle && !tempVehicleID) setTempVehicleID(userAssignedVehicle);
+  }, [userAssignedVehicle])
 
   useEffect(() => {
     if (userLocation) {
@@ -41,20 +46,31 @@ const Map = () => {
   }, [userLocation])
 
   useEffect(() => {
-    if (!userAssignedVehicle) return;
-    onValue(ref(getDatabase(), `vehicles/${userAssignedVehicle}`), (snapshot) => {
-      dispatch(setVehicleLocation(snapshot.val().currentLocation))
-      dispatch(setVehicleETA(snapshot.val()?.route?.eta))
-      dispatch(setVehicleKMLeft(snapshot.val()?.route?.km_left))
-      dispatch(setVehicleTimeLeft(snapshot.val()?.route?.time_left))
-      setShowLocation({
-        latitude: snapshot.val().currentLocation.location.lat,
-        longitude: snapshot.val().currentLocation.location.lng,
-        latitudeDelta: 0.01,
-        longitudeDelta: 0.01,
-      })
-    });
-  }, [userAssignedVehicle]);
+    if (!userAssignedVehicle || !tempVehicleID) return;
+    if (tempVehicleID && userAssignedVehicle === tempVehicleID) {
+      console.log("vehicle is on the way, creating a listener", "vehicle ID", userAssignedVehicle)
+      let listener = onValue(ref(getDatabase(), `vehicles/${userAssignedVehicle}`), (snapshot) => {
+        dispatch(setVehicleLocation(snapshot.val().currentLocation))
+        dispatch(setVehicleETA(snapshot.val()?.route?.eta))
+        dispatch(setVehicleKMLeft(snapshot.val()?.route?.km_left))
+        dispatch(setVehicleTimeLeft(snapshot.val()?.route?.time_left))
+        setShowLocation({
+          latitude: snapshot.val().currentLocation.location.lat,
+          longitude: snapshot.val().currentLocation.location.lng,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01,
+        })
+      });
+      unsubscribeListener.current = listener;
+      console.log(listener);
+    } else {
+      console.log("Vehicle has been reassigned. new plate number is:", userAssignedVehicle);
+      unsubscribeListener.current();
+      unsubscribeListener.current = null;
+      setTempVehicleID(userAssignedVehicle);
+      // }
+    }
+  }, [userAssignedVehicle, tempVehicleID]);
 
   useEffect(() => {
     if (origin && destination) {

@@ -33,7 +33,10 @@
       "supportsTablet": true,
       "bundleIdentifier": "betteride.com",
       "infoPlist": {
-        "NSFaceIDUsageDescription": "Betteride needs to use Face ID"
+        "NSFaceIDUsageDescription": "Betteride needs to use Face ID",
+        "NSAppTransportSecurity" : {
+          "NSAllowsArbitraryLoads" : true
+        }
       }
     },
     "android": {

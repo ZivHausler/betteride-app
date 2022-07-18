@@ -38,8 +38,7 @@ const ConfirmOrder = () => {
     fetch(`http://${IP_ADDRESS}:3002/api/OrderVehicle?userOrigin=${origin.description}&userDestination=${destination.description}&userID=${userData.id}`, {
       method: 'GET',
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
     })
       .then(response => response.json())
@@ -48,14 +47,14 @@ const ConfirmOrder = () => {
         // create listener to the specific vehicle plate number
         // dispatch(setOrigin(null));
         dispatch(setDestination(null));
-        dispatch(setRouteShown('vehicleToUser'));;
+        dispatch(setRouteShown('vehicleToUser'));
         dispatch(setTabShown('fulfilled'));
       })
       .catch(e => {
         console.log(e)
       })
       .finally(() => {
-        setIsSearchingVehicle(false)
+        setIsSearchingVehicle(false);
       })
   }
 

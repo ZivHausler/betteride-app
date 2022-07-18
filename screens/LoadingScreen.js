@@ -1,14 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { Image, StyleSheet, Text, View, ActivityIndicator, Animated, Button, Easing, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, ActivityIndicator, Animated } from 'react-native'
 import tw from 'tailwind-react-native-classnames'
 import { LinearGradient } from 'expo-linear-gradient';
-import { useNavigation } from '@react-navigation/native';
 import { initializeApp } from 'firebase/app';
 import { selectUserAssignedVehicle, setDestination, setOrigin, setRouteShown, setTabShown, setUserAssignedVehicle } from '../slices/navSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import AppLoading from 'expo-app-loading';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { selectUserInfo, setUserInfo, setUserLocation } from '../slices/userSlice';
+import { setUserInfo, setUserLocation } from '../slices/userSlice';
 import LoginButton from '../components/LoginButton';
 import * as Google from 'expo-google-app-auth';
 import * as Device from 'expo-device';
@@ -16,6 +15,7 @@ import * as Notifications from 'expo-notifications';
 import { IP_ADDRESS } from '@env'
 import * as Location from 'expo-location';
 import { setVehiclePlateNumber } from '../slices/vehicleSlice';
+import { getDatabase, ref, onValue } from 'firebase/database';
 
 const LoadingScreen = ({ navigation, route }) => {
 
@@ -82,6 +82,12 @@ const LoadingScreen = ({ navigation, route }) => {
                         })
                             .then(response => response.json())
                             .then(response => {
+                                console.log('logged user:', user.id);
+                                if (response?.trip?.state?.assigned)
+                                    onValue(ref(getDatabase(), `users/${user.id}/trip/state/assigned`), snapshot => {
+                                        console.log('assigned vehicleID:', snapshot.val());
+                                        dispatch(setUserAssignedVehicle(snapshot.val()));
+                                    })
                                 let savedData = {
                                     id: user.id,
                                     email: user.email,
@@ -142,7 +148,7 @@ const LoadingScreen = ({ navigation, route }) => {
                                 dispatch(setUserInfo(savedData));
                             })
                             .catch(e => alert('inside fetch error', e))
-                        setTimeout(() => navigation.navigate('Map'),1);
+                        setTimeout(() => navigation.navigate('Map'), 1);
                     }
                 })
                 .catch(error => console.log('error', error))
@@ -156,6 +162,10 @@ const LoadingScreen = ({ navigation, route }) => {
                     break;
                 case 'WITH_USER':
                     dispatch(setTabShown('arrived_to_destination'));
+                    break;
+                case 'REASSIGN':
+                    if (notification?.request?.content?.data?.plateNumber)
+                        dispatch(setUserAssignedVehicle(notification?.request?.content?.data?.plateNumber))
                     break;
                 default:
                     break;
@@ -316,10 +326,10 @@ export default LoadingScreen
 const styles = StyleSheet.create({
     carIcon: {
         height: 300,
-        width: 500,
+        width: 600,
         position: 'absolute',
         bottom: '15%',
-        right: '-50%',
+        right: '-65%',
     },
     logoTextContainer: {
         position: 'absolute',
@@ -331,7 +341,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 70,
         color: 'white',
-        fontWeight: '500',
+        fontWeight: '700',
     },
     subTitle: {
         textAlign: 'center',
