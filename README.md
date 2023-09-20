@@ -1,2 +1,3 @@
 # Betteride-Expo-App
-# Hi ziv
+
+# adding me as a contributor
