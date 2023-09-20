@@ -23,4 +23,4 @@ When you arrive at your destination, the app will automatically calculate the fa
 5. 24/7 availability
 
 📷 Screenshots:
-<img src="images/example.png" alt="Example Image" class="custom-image">
+<img src="images/1.png" alt="Example Image" class="custom-image">
