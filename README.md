@@ -1,6 +1,5 @@
 # BetterRide
-
-# BetterRide is a ride-hailing app that matches users with electric automated cars. The app is designed to be user-friendly and convenient, with a focus on providing a good user experience.
+BetterRide is a ride-hailing app that matches users with electric automated cars. The app is designed to be user-friendly and convenient, with a focus on providing a good user experience.
 
 # What can the application do?
 To use BetterRide, simply open the app and enter your destination. The app will then automatically select the best vehicle for you based on a number of factors, such as your location, the number of passengers, and the time of day.
