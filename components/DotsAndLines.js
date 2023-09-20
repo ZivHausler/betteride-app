@@ -7,7 +7,7 @@ const DotsAndLines = ({ amountOfLines }) => {
     const renderThem = () => {
         let list = [];
         for (let index = 0; index < amountOfLines; index++) {
-            list.push(<View key={index} style={tw`h-1 w-0.5 bg-gray-900 opacity-60 rounded-full`}></View>
+            list.push(<View key={index} style={tw`h-1 w-0.5 bg-gray-900 opacity-60 rounded-full h-1`}></View>
             )
         }
         return list;
